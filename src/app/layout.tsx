@@ -3,6 +3,7 @@ import { Aref_Ruqaa, IBM_Plex_Sans_Arabic, Noto_Naskh_Arabic } from "next/font/g
 import type { ReactNode } from "react";
 import { IdentityProvider } from "@/components/identity-provider";
 import { AinCursor } from "@/components/ain-cursor";
+import { AudioControl } from "@/components/audio-control";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
@@ -64,6 +65,7 @@ export default function RootLayout({
             <main id="main">{children}</main>
           </SmoothScroll>
           <AinCursor />
+          <AudioControl />
         </IdentityProvider>
       </body>
     </html>

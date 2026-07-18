@@ -57,7 +57,7 @@ export function AboutView() {
       <div className="relative mx-auto max-w-2xl">
         <header data-about-head className="mb-16 text-center">
           <div className="mb-8 flex justify-center" style={{ color: "var(--bronze)" }}>
-            <AinMark variant={variant} size={90} eye title="الحرف ع — ختم علي هاشمي" />
+            <AinMark variant={variant} size={130} eye title="الحرف ع — ختم علي هاشمي" />
           </div>
           <span className="text-xs tracking-[0.3em] text-bronze">صاحب المكتبة</span>
           <h1 className="font-display mt-3 m-0 text-4xl text-parchment sm:text-5xl">علي هاشمي</h1>

@@ -65,7 +65,7 @@ export function HomeSections({ recent, aboutExcerpt }: { recent: Article[]; abou
       >
         <div data-reveal className="max-w-2xl text-center">
           <div className="mb-6 flex justify-center text-bronze">
-            <AinMark variant={variant} size={44} eye />
+            <AinMark variant={variant} size={60} eye />
           </div>
           <h2 id="about-heading" className="font-display mb-6 text-3xl text-parchment sm:text-4xl">
             صاحب المكتبة
@@ -122,7 +122,7 @@ export function HomeSections({ recent, aboutExcerpt }: { recent: Article[]; abou
         style={{ borderColor: "var(--line)" }}
       >
         <div className="mb-4 flex justify-center text-bronze">
-          <AinMark variant={variant} size={26} />
+          <AinMark variant={variant} size={36} />
         </div>
         <p className="m-0 font-light">
           مكتبة علي هاشمي — نصوص عربية تُكتب على مهل. جميع الحقوق محفوظة © 2026

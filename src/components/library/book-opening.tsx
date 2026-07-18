@@ -123,7 +123,7 @@ export function BookOpening({ book, fromRect, onDone }: BookOpeningProps) {
               boxShadow: "inset -18px 0 30px rgba(138,107,69,0.25)"
             }}
           >
-            <AinMark variant="a" size={54} />
+            <AinMark variant="a" size={66} />
             <div className="font-display" style={{ fontSize: "1.6rem", textAlign: "center" }}>
               {book.title}
             </div>
@@ -157,7 +157,7 @@ export function BookOpening({ book, fromRect, onDone }: BookOpeningProps) {
               backfaceVisibility: "hidden"
             }}
           >
-            <AinMark variant="a" size={64} className="text-gold" />
+            <AinMark variant="a" size={82} className="text-gold" />
             <div className="font-display" style={{ color: "var(--gold)", fontSize: "1.8rem" }}>
               {book.title}
             </div>

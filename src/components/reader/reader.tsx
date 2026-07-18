@@ -160,7 +160,7 @@ export function Reader({ article, book, previous, next }: ReaderProps) {
             {article.subtitle}
           </p>
           <div className="mt-8 flex justify-center" style={{ color: "var(--bronze)" }}>
-            <AinMark variant="a" size={30} />
+            <AinMark variant="a" size={42} />
           </div>
         </header>
 
@@ -182,7 +182,7 @@ export function Reader({ article, book, previous, next }: ReaderProps) {
 
           <div className="mt-14 flex items-center justify-center gap-3" style={{ color: "var(--bronze)" }}>
             <span aria-hidden className="h-px w-12" style={{ background: "currentColor", opacity: 0.5 }} />
-            <AinMark variant="a" size={22} />
+            <AinMark variant="a" size={28} />
             <span aria-hidden className="h-px w-12" style={{ background: "currentColor", opacity: 0.5 }} />
           </div>
         </article>

@@ -184,7 +184,7 @@ export function LibraryScene({ books }: { books: LoadedBook[] }) {
       {showIntro ? (
         <div ref={introRef} className={styles.intro} aria-hidden>
           <span data-intro-mark style={{ color: "var(--accent)" }}>
-            <AinMark variant={variant} size={110} eye />
+            <AinMark variant={variant} size={160} eye />
           </span>
           <span data-intro-title className={`${styles.introTitle} font-display`}>
             مكتبة علي هاشمي

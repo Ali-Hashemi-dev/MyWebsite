@@ -46,7 +46,7 @@ export const BookSpine = forwardRef<HTMLButtonElement, BookSpineProps>(function 
           background: `linear-gradient(160deg, ${book.binding.from}, ${book.binding.to})`
         }}
       >
-        <AinMark variant="a" size={16} className={styles.spineMark} />
+        <AinMark variant="a" size={20} className={styles.spineMark} />
         <span className={styles.spineTitle}>{book.title}</span>
         <span style={{ color: "var(--bronze)", fontSize: "0.62rem" }}>
           {empty ? "···" : arabicDigits(book.articles.length)}

@@ -150,7 +150,7 @@ export function CategoryView({ book }: { book: CategoryViewProps["book"] }) {
           {/* left page: the book's character */}
           <aside className="relative hidden flex-col justify-between p-12 md:flex">
             <div className="flex justify-center pt-6" style={{ color: "rgba(138,107,69,0.5)" }}>
-              <AinMark variant="a" size={120} eye eyeColor="var(--accent)" />
+              <AinMark variant="a" size={160} eye eyeColor="var(--accent)" />
             </div>
             <div>
               <p className="font-naskh text-lg leading-loose" style={{ color: "#4a3822" }}>
