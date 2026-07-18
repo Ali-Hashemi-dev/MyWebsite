@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { AIN, type AinVariant } from "@/lib/ain";
+import { AIN, AIN_TIP_X, type AinVariant } from "@/lib/ain";
 import { useAinVariant } from "./identity-provider";
 
 /**
@@ -28,9 +28,7 @@ function cursorUri(variant: AinVariant, fill: string, outline: string) {
 function hotspot(variant: AinVariant) {
   const shape = AIN[variant];
   const scale = CURSOR_HEIGHT / shape.height;
-  // the tip of the diagonal stroke is the natural click point
-  const tipX = variant === "a" ? 242 : 370;
-  return { x: Math.round(tipX * scale), y: 1 };
+  return { x: Math.round(AIN_TIP_X[variant] * scale), y: 1 };
 }
 
 export function AinCursor() {

@@ -8,6 +8,11 @@ import { useAinVariant } from "../identity-provider";
 
 const VARIANTS: Array<{ id: AinVariant; name: string; note: string }> = [
   {
+    id: "c",
+    name: "الأيقونة — العين المفتوحة",
+    note: "جسم مستدير وعين واسعة مفتوحة؛ أوضح الصيغ كأيقونة، وأكثرها حياةً كعين."
+  },
+  {
     id: "a",
     name: "الصيغة الأولى — المتوسّطة",
     note: "جسم مضغوط وعين مركزية؛ يقرأ بوضوح حتى في ١٦ بكسل، ويتوازن كمؤشر."
@@ -55,12 +60,12 @@ export function Lab() {
           <span className="text-xs tracking-[0.3em] text-bronze">مختبر الهوية</span>
           <h1 className="font-display mt-3 mb-4 text-4xl text-parchment sm:text-5xl">المِرسم</h1>
           <p className="mx-auto max-w-xl leading-loose font-light text-warm-gray">
-            حرف العين من اسم عليّ، مقصوصٌ بصيغتين. جرّب كلاً منهما كأيقونة، وكمؤشرٍ للفأرة،
+            حرف العين من اسم عليّ، مقصوصٌ بثلاث صيغ. جرّب كلاً منها كأيقونة، وكمؤشرٍ للفأرة،
             وكعينٍ حيّة ترمش وتتبع نظرك — ثم اختر أيّهما يسكن المكتبة.
           </p>
         </header>
 
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {VARIANTS.map((entry) => {
             const active = variant === entry.id;
             const shape = AIN[entry.id];

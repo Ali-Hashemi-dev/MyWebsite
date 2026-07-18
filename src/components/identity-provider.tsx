@@ -18,7 +18,7 @@ export function IdentityProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem(AIN_VARIANT_STORAGE_KEY);
-    if (stored === "a" || stored === "b") {
+    if (stored === "a" || stored === "b" || stored === "c") {
       setVariantState(stored);
     }
   }, []);
