@@ -2,10 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------ */
+/* Design tokens — the library palette                                 */
+/* ------------------------------------------------------------------ */
 :root {
   color-scheme: dark;
-  --background: #080706;
-  --foreground: #fff8ef;
+
+  /* Neutrals */
+  --ink: #0c0a08;
+  --ink-soft: #16120e;
+  --wood-deep: #1d130c;
+  --wood: #2a1b10;
+  --wood-warm: #3b2716;
+  --parchment: #ecdfc7;
+  --parchment-dim: #d8c9ac;
+  --warm-gray: #a89a87;
+  --bronze: #8a6b45;
+  --gold: #c9a86a;
+
+  /* Accent — neon orange, used sparingly */
+  --accent: #ff6a00;
+  --accent-soft: #ff8c1a;
+  --accent-glow: rgba(255, 106, 0, 0.35);
+
+  --line: rgba(201, 168, 106, 0.16);
+  --reader-size: 1.22rem;
 }
 
 * {
@@ -13,66 +34,106 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scrollbar-color: var(--bronze) var(--ink);
 }
 
 body {
-  min-height: 100vh;
   margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-noto-arabic), var(--font-geist-sans), system-ui, sans-serif;
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: var(--font-plex-arabic), "Segoe UI", Tahoma, sans-serif;
+  line-height: 1.9;
   overflow-x: hidden;
-  text-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-body::selection {
-  background: rgba(249, 115, 22, 0.42);
-  color: #fff8ef;
+::selection {
+  background: var(--accent);
+  color: var(--ink);
 }
 
 a {
   color: inherit;
 }
 
-.noise {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.16;
-  mix-blend-mode: soft-light;
-  background-image:
-    linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(circle at center, black 0%, transparent 76%);
+/* Display + reading families */
+.font-display {
+  font-family: var(--font-ruqaa), var(--font-plex-arabic), serif;
 }
 
-.gradient-border {
-  position: relative;
-}
-
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(135deg, rgba(249,115,22,.78), rgba(255,255,255,.18), rgba(124,45,18,.56));
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
+.font-naskh {
+  font-family: var(--font-naskh), var(--font-plex-arabic), serif;
 }
 
 .text-balance {
   text-wrap: balance;
 }
 
-.text-pretty {
-  text-wrap: pretty;
+/* ------------------------------------------------------------------ */
+/* Film grain + vignette, laid over everything, never intercepting     */
+/* ------------------------------------------------------------------ */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 9s steps(6) infinite;
+}
+
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2%, 3%); }
+  40% { transform: translate(3%, -2%); }
+  60% { transform: translate(-3%, -3%); }
+  80% { transform: translate(2%, 2%); }
+}
+
+.vignette::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 79;
+  pointer-events: none;
+  background: radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(5, 3, 2, 0.55) 100%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Custom cursor: hide the native cursor only while ع cursor is live   */
+/* ------------------------------------------------------------------ */
+html.ain-cursor-active,
+html.ain-cursor-active * {
+  cursor: none !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Focus & accessibility                                               */
+/* ------------------------------------------------------------------ */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  right: 1rem;
+  z-index: 200;
+  padding: 0.6rem 1.2rem;
+  background: var(--accent);
+  color: var(--ink);
+  border-radius: 999px;
+  font-weight: 700;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -81,7 +142,43 @@ a {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reading mode                                                        */
+/* ------------------------------------------------------------------ */
+.reader-body {
+  font-size: var(--reader-size);
+  line-height: 2.3;
+}
+
+.reader-body p {
+  margin: 0 0 1.7em;
+  text-align: justify;
+  text-align-last: right;
+}
+
+.reader-body > div:last-of-type p:last-child {
+  margin-bottom: 0;
+}
+
+body.reader-large {
+  --reader-size: 1.42rem;
+}
+
+/* Paper texture for parchment surfaces */
+.paper {
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(138, 107, 69, 0.09), transparent 60%),
+    radial-gradient(ellipse at 85% 90%, rgba(138, 107, 69, 0.12), transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.08' numOctaves='4'/%3E%3CfeColorMatrix values='0 0 0 0 0.54 0 0 0 0 0.42 0 0 0 0 0.27 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+
+.paper-dark {
+  background-color: var(--ink-soft);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.08' numOctaves='4'/%3E%3CfeColorMatrix values='0 0 0 0 0.79 0 0 0 0 0.66 0 0 0 0 0.42 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
 }
