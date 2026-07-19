@@ -56,4 +56,4 @@ export const GISCUS = {
  * Address readers write letters to. Use an alias that does not reveal the
  * writer's identity.
  */
-export const CONTACT_EMAIL = "ain.library@gmail.com";
+export const CONTACT_EMAIL = "20ruleeez11@gmail.com";

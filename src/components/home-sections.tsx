@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Article } from "@/data/articles";
+import { useLiveArticles } from "@/lib/live-articles";
 import { AinMark } from "./ain-mark";
 import { useAinVariant } from "./identity-provider";
 
@@ -17,6 +18,9 @@ gsap.registerPlugin(ScrollTrigger);
 export function HomeSections({ recent, aboutExcerpt }: { recent: Article[]; aboutExcerpt: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const { variant } = useAinVariant();
+
+  /* freshly published texts join the latest manuscripts before the rebuild */
+  const { live } = useLiveArticles();
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -112,6 +116,32 @@ export function HomeSections({ recent, aboutExcerpt }: { recent: Article[]; abou
                 />
               </Link>
             ))}
+            {/* committed but not baked yet — straight from the repo */}
+            {live.map((article) => (
+              <Link
+                key={`live-${article.file}`}
+                href={article.href}
+                className="group relative overflow-hidden rounded-xl border p-6 no-underline transition-transform duration-500 hover:-translate-y-1.5"
+                style={{ borderColor: "rgba(255,106,0,0.35)", background: "rgba(236, 223, 199, 0.03)" }}
+              >
+                <span className="block text-xs tracking-widest text-bronze">
+                  {article.genre}
+                  <span
+                    className="mr-2 inline-block rounded-full border px-2 py-0.5 text-[0.55rem] tracking-widest"
+                    style={{ borderColor: "rgba(255,106,0,0.5)", color: "var(--accent)" }}
+                  >
+                    جديد
+                  </span>
+                </span>
+                <span className="font-display mt-3 block text-xl text-parchment transition-colors duration-300 group-hover:text-accent">
+                  {article.title}
+                </span>
+                <span className="mt-3 block text-sm leading-relaxed font-light text-warm-gray">
+                  {article.summary}
+                </span>
+                <span className="mt-5 block text-xs text-bronze">{article.readingTime}</span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -126,6 +156,15 @@ export function HomeSections({ recent, aboutExcerpt }: { recent: Article[]; abou
         </div>
         <p className="m-0 font-light">
           مكتبة عين — نصوص عربية تُكتب على مهل. جميع الحقوق محفوظة © 2026
+        </p>
+        <p className="m-0 mt-3 text-xs">
+          <Link
+            href="/admin/"
+            className="no-underline transition-colors hover:text-accent"
+            style={{ color: "var(--bronze)", opacity: 0.75 }}
+          >
+            باب المكتب
+          </Link>
         </p>
       </footer>
     </div>

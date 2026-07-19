@@ -18,7 +18,12 @@ type Glyph = {
 };
 
 /** Overall layer opacity — the glyphs must stay whisper-faint over text. */
-const LAYER_ALPHA = 0.06;
+const LAYER_ALPHA = 0.09;
+
+const PARCHMENT: Tint = [236, 223, 199];
+const ACCENT: Tint = [255, 106, 0];
+
+type Tint = [number, number, number];
 
 /**
  * The ع letterform drifting down the viewport like leaves in still library
@@ -56,16 +61,25 @@ export function FallingAin() {
     let accent: HTMLCanvasElement | null = null;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
 
-    // Recolor the black PNG: draw, then source-in fill keeps only the alpha.
-    function tint(img: HTMLImageElement, color: string) {
+    // Recolor the PNG. The source is a black glyph on an opaque white
+    // ground, so alpha alone cannot isolate the letter — luminance becomes
+    // transparency (black → opaque, white → clear), then the tint is applied.
+    function tint(img: HTMLImageElement, [r, g, b]: Tint) {
       const off = document.createElement("canvas");
       off.width = img.naturalWidth;
       off.height = img.naturalHeight;
       const octx = off.getContext("2d")!;
       octx.drawImage(img, 0, 0);
-      octx.globalCompositeOperation = "source-in";
-      octx.fillStyle = color;
-      octx.fillRect(0, 0, off.width, off.height);
+      const image = octx.getImageData(0, 0, off.width, off.height);
+      const data = image.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const lum = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i + 3] = Math.round(data[i + 3] * (1 - lum / 255));
+        data[i] = r;
+        data[i + 1] = g;
+        data[i + 2] = b;
+      }
+      octx.putImageData(image, 0, 0);
       return off;
     }
 
@@ -138,8 +152,8 @@ export function FallingAin() {
     img.src = (process.env.NEXT_PUBLIC_BASE_PATH || "") + "/ain.png";
     img.onload = () => {
       if (disposed) return;
-      parchment = tint(img, "#ecdfc7");
-      accent = tint(img, "#ff6a00");
+      parchment = tint(img, PARCHMENT);
+      accent = tint(img, ACCENT);
       seed(img.naturalHeight / img.naturalWidth);
       last = performance.now();
       raf = requestAnimationFrame(frame);
