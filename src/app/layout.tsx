@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Aref_Ruqaa, IBM_Plex_Sans_Arabic, Noto_Naskh_Arabic } from "next/font/google";
 import type { ReactNode } from "react";
-import { IdentityProvider } from "@/components/identity-provider";
 import { AinCursor } from "@/components/ain-cursor";
 import { AudioControl } from "@/components/audio-control";
+import { FallingAin } from "@/components/falling-ain";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
@@ -30,17 +30,17 @@ const notoNaskh = Noto_Naskh_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "مكتبة علي هاشمي",
+  title: "مكتبة عين",
   description:
-    "مكتبة عربية غامرة: قصص، مقالات، وشعر حر لعلي هاشمي. تجربة قراءة سينمائية تُشبه دخول مكتبة قديمة تسكنها المعرفة.",
-  keywords: ["علي هاشمي", "كاتب لبناني", "مكتبة عربية", "نصوص عربية", "قصص", "مقالات", "شعر حر"],
-  authors: [{ name: "علي هاشمي" }],
-  creator: "علي هاشمي",
+    "مكتبة عربية غامرة: قصص، مقالات، وشعر حر بتوقيع عين. تجربة قراءة سينمائية تُشبه دخول مكتبة قديمة تسكنها المعرفة.",
+  keywords: ["عين", "مكتبة عربية", "نصوص عربية", "قصص", "مقالات", "شعر حر"],
+  authors: [{ name: "عين" }],
+  creator: "عين",
   openGraph: {
-    title: "مكتبة علي هاشمي",
+    title: "مكتبة عين",
     description: "مكتبة عربية غامرة تُروى كتبها بالضوء والغبار والحبر.",
     type: "website",
-    locale: "ar_LB"
+    locale: "ar"
   }
 };
 
@@ -56,17 +56,16 @@ export default function RootLayout({
       className={`${plexArabic.variable} ${arefRuqaa.variable} ${notoNaskh.variable}`}
     >
       <body className="grain vignette">
-        <IdentityProvider>
-          <a href="#main" className="skip-link">
-            تخطَّ إلى المحتوى
-          </a>
-          <SmoothScroll>
-            <SiteNav />
-            <main id="main">{children}</main>
-          </SmoothScroll>
-          <AinCursor />
-          <AudioControl />
-        </IdentityProvider>
+        <a href="#main" className="skip-link">
+          تخطَّ إلى المحتوى
+        </a>
+        <SmoothScroll>
+          <SiteNav />
+          <main id="main">{children}</main>
+        </SmoothScroll>
+        <FallingAin />
+        <AinCursor />
+        <AudioControl />
       </body>
     </html>
   );

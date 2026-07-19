@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ambience, AMBIENCE_STORAGE_KEY } from "@/lib/ambience";
+import { ambience, AMBIENCE_STORAGE_KEY, SOUNDSCAPES, type SoundscapeId } from "@/lib/ambience";
 
-type Stored = { on: boolean; volume: number };
+type Stored = { on: boolean; volume: number; scape: SoundscapeId };
+
+function isSoundscapeId(value: unknown): value is SoundscapeId {
+  return SOUNDSCAPES.some((scape) => scape.id === value);
+}
 
 function readStored(): Stored {
   try {
@@ -12,24 +16,27 @@ function readStored(): Stored {
       const parsed = JSON.parse(raw) as Partial<Stored>;
       return {
         on: Boolean(parsed.on),
-        volume: typeof parsed.volume === "number" ? Math.min(1, Math.max(0, parsed.volume)) : 0.6
+        volume: typeof parsed.volume === "number" ? Math.min(1, Math.max(0, parsed.volume)) : 0.6,
+        scape: isSoundscapeId(parsed.scape) ? parsed.scape : "library"
       };
     }
   } catch {
     /* fall through to defaults */
   }
-  return { on: false, volume: 0.6 };
+  return { on: false, volume: 0.6, scape: "library" };
 }
 
 /**
  * The ambience lantern: a small fixed control that turns the library's
- * soundscape on or off and adjusts its volume. Preference is remembered;
- * if it was on, the sound resumes on the first click or key press of the
- * next visit (browsers require a gesture before audio).
+ * soundscape on or off, adjusts its volume, and picks which soundscape
+ * plays. Preference is remembered; if it was on, the sound resumes on the
+ * first click or key press of the next visit (browsers require a gesture
+ * before audio).
  */
 export function AudioControl() {
   const [on, setOn] = useState(false);
   const [volume, setVolume] = useState(0.6);
+  const [scape, setScape] = useState<SoundscapeId>("library");
   const [open, setOpen] = useState(false);
   const armedRef = useRef(false);
 
@@ -37,6 +44,8 @@ export function AudioControl() {
   useEffect(() => {
     const stored = readStored();
     setVolume(stored.volume);
+    setScape(stored.scape);
+    ambience.setScape(stored.scape);
     if (!stored.on) return;
 
     setOn(true);
@@ -96,12 +105,59 @@ export function AudioControl() {
     persist({ volume: next });
   }
 
+  /* pick a soundscape: crossfades if playing, only remembers if off */
+  function onScape(next: SoundscapeId) {
+    setScape(next);
+    ambience.setScape(next);
+    persist({ scape: next });
+  }
+
+  const expanded = open || on;
+
   return (
     <div
       className="fixed bottom-5 left-5 z-[95] flex items-center gap-3"
       onPointerEnter={() => setOpen(true)}
       onPointerLeave={() => setOpen(false)}
     >
+      {/* soundscape picker: a column of pills floating above the lantern */}
+      <div
+        dir="rtl"
+        className="absolute bottom-full left-0 mb-3 flex flex-col items-end gap-2 transition-all duration-500"
+        style={{
+          opacity: expanded ? 1 : 0,
+          transform: expanded ? "translateY(0)" : "translateY(8px)",
+          pointerEvents: expanded ? "auto" : "none"
+        }}
+        aria-hidden={!expanded}
+      >
+        {SOUNDSCAPES.map((option) => {
+          const active = option.id === scape;
+          return (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => onScape(option.id)}
+              onFocus={() => setOpen(true)}
+              aria-pressed={active}
+              aria-label={`اختر مشهد ${option.name}`}
+              title={option.hint}
+              tabIndex={expanded ? 0 : -1}
+              className="whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[0.72rem] transition-all duration-300"
+              style={{
+                borderColor: active ? "var(--accent)" : "var(--line)",
+                background: "rgba(18, 13, 9, 0.82)",
+                color: active ? "var(--accent)" : "var(--warm-gray)",
+                boxShadow: active ? "0 0 18px rgba(255,106,0,0.22)" : "0 6px 18px rgba(0,0,0,0.35)",
+                backdropFilter: "blur(8px)"
+              }}
+            >
+              {option.name}
+            </button>
+          );
+        })}
+      </div>
+
       <button
         type="button"
         onClick={toggle}
@@ -148,13 +204,13 @@ export function AudioControl() {
           borderColor: "var(--line)",
           background: "rgba(18, 13, 9, 0.82)",
           backdropFilter: "blur(8px)",
-          width: open || on ? "9.5rem" : 0,
-          opacity: open || on ? 1 : 0,
+          width: expanded ? "9.5rem" : 0,
+          opacity: expanded ? 1 : 0,
           paddingTop: "0.55rem",
           paddingBottom: "0.55rem",
-          borderWidth: open || on ? 1 : 0
+          borderWidth: expanded ? 1 : 0
         }}
-        aria-hidden={!(open || on)}
+        aria-hidden={!expanded}
       >
         <input
           type="range"
@@ -165,7 +221,7 @@ export function AudioControl() {
           aria-label="مستوى صوت المكتبة"
           dir="ltr"
           style={{ width: "100%", accentColor: "var(--accent)" }}
-          tabIndex={open || on ? 0 : -1}
+          tabIndex={expanded ? 0 : -1}
         />
       </div>
     </div>

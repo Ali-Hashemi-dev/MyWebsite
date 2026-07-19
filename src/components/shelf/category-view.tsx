@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import type { Article } from "@/data/articles";
 import type { ShelfBook } from "@/data/shelf";
+import { useLiveArticles } from "@/lib/live-articles";
 import { AinMark } from "../ain-mark";
 import { Dust } from "../dust";
 
@@ -26,6 +27,13 @@ function arabicNumeral(value: number) {
 export function CategoryView({ book }: { book: CategoryViewProps["book"] }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const spreadRef = useRef<HTMLDivElement>(null);
+
+  /* freshly published texts, visible before the next static rebuild */
+  const { live } = useLiveArticles();
+  const bakedFiles = new Set(book.articles.map((article) => article.file));
+  const liveEntries = live.filter(
+    (article) => book.genres.includes(article.genre) && !bakedFiles.has(article.file)
+  );
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -104,7 +112,7 @@ export function CategoryView({ book }: { book: CategoryViewProps["book"] }) {
               {book.title}
             </h1>
 
-            {book.articles.length === 0 ? (
+            {book.articles.length === 0 && liveEntries.length === 0 ? (
               <p className="leading-loose" style={{ color: "var(--bronze)" }}>
                 هذا الكتاب لم يُكتب بعد. صفحاته تنتظر حبرها الأول — عُد إليه قريباً.
               </p>
@@ -129,6 +137,46 @@ export function CategoryView({ book }: { book: CategoryViewProps["book"] }) {
                           style={{ color: "#241610" }}
                         >
                           {article.title}
+                        </span>
+                        <span className="mt-1 block text-sm" style={{ color: "#6d5636" }}>
+                          {article.subtitle} · {article.readingTime}
+                        </span>
+                      </span>
+                      <span
+                        aria-hidden
+                        className="translate-x-2 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                      >
+                        ↞
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+                {/* live entries: committed but not baked yet — no entrance animation */}
+                {liveEntries.map((article, index) => (
+                  <li key={article.id || article.file}>
+                    <Link
+                      href={article.href}
+                      className="group flex items-baseline gap-4 border-b py-5 no-underline transition-colors"
+                      style={{ borderColor: "rgba(138,107,69,0.2)" }}
+                    >
+                      <span
+                        className="font-display text-lg transition-colors group-hover:text-accent"
+                        style={{ color: "var(--bronze)", minWidth: "1.6rem" }}
+                      >
+                        {arabicNumeral(book.articles.length + index + 1)}
+                      </span>
+                      <span className="flex-1">
+                        <span
+                          className="font-display block text-2xl transition-colors duration-300 group-hover:text-accent"
+                          style={{ color: "#241610" }}
+                        >
+                          {article.title}
+                          <span
+                            className="mr-3 inline-block translate-y-[-0.3em] rounded-full border px-2 py-0.5 align-middle text-[0.55rem] tracking-widest"
+                            style={{ borderColor: "rgba(255,106,0,0.5)", color: "var(--accent)" }}
+                          >
+                            جديد
+                          </span>
                         </span>
                         <span className="mt-1 block text-sm" style={{ color: "#6d5636" }}>
                           {article.subtitle} · {article.readingTime}
@@ -169,7 +217,7 @@ export function CategoryView({ book }: { book: CategoryViewProps["book"] }) {
               </div>
             </div>
             <p className="text-xs tracking-widest" style={{ color: "rgba(138,107,69,0.7)" }}>
-              من رفوف مكتبة علي هاشمي
+              من رفوف مكتبة عين
             </p>
           </aside>
         </div>

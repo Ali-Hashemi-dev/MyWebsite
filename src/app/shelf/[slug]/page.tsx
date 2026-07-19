@@ -16,7 +16,7 @@ export async function generateMetadata({
   const book = bookBySlug(slug);
   if (!book) return {};
   return {
-    title: `${book.title} | مكتبة علي هاشمي`,
+    title: `${book.title} | مكتبة عين`,
     description: book.tagline
   };
 }

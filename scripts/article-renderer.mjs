@@ -136,8 +136,8 @@ export function renderArticleHtml(article, bodyHtml, allArticles) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>${escapeHtml(article.title)} | علي هاشمي</title>
-    <meta name="description" content="${escapeHtml(article.title)} - ${escapeHtml(article.subtitle)}. نص أدبي لعلي هاشمي." />
+    <title>${escapeHtml(article.title)} | عين</title>
+    <meta name="description" content="${escapeHtml(article.title)} - ${escapeHtml(article.subtitle)}. نص أدبي بتوقيع عين." />
     <style>
       :root {
         color-scheme: dark;
@@ -375,7 +375,7 @@ export function renderArticleHtml(article, bodyHtml, allArticles) {
       <section class="chrome" aria-labelledby="article-title">
         <header>
           <div class="meta">
-            <span class="pill">علي هاشمي</span>
+            <span class="pill">عين</span>
             <span class="pill">${escapeHtml(article.category)}</span>
             <span class="pill">${escapeHtml(article.date)}</span>
             <span class="pill">${escapeHtml(article.readingTime)}</span>

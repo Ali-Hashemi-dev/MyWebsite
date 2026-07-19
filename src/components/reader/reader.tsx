@@ -6,7 +6,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Article, ArticleBlock } from "@/data/articles";
 import type { ShelfBook } from "@/data/shelf";
+import { GISCUS } from "@/data/site-config";
 import { AinMark } from "../ain-mark";
+import { GiscusThread } from "../salon/giscus-thread";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -197,13 +199,15 @@ export function Reader({ article, book, previous, next }: ReaderProps) {
           >
             {large ? "تصغير الخط" : "تكبير الخط"}
           </button>
-          <a
-            href={article.pdf}
-            className="rounded-full border px-4 py-2 no-underline transition-colors hover:text-accent"
-            style={{ borderColor: "var(--line)", color: "var(--warm-gray)" }}
-          >
-            النسخة الأصلية PDF
-          </a>
+          {article.pdf ? (
+            <a
+              href={article.pdf}
+              className="rounded-full border px-4 py-2 no-underline transition-colors hover:text-accent"
+              style={{ borderColor: "var(--line)", color: "var(--warm-gray)" }}
+            >
+              النسخة الأصلية PDF
+            </a>
+          ) : null}
         </div>
 
         {/* prev / next */}
@@ -237,6 +241,29 @@ export function Reader({ article, book, previous, next }: ReaderProps) {
             <span />
           )}
         </nav>
+
+        {/* per-article discussion */}
+        <section aria-label="نقاش النص" className="mt-16">
+          <div className="mb-6 flex items-center gap-3 text-xs tracking-[0.25em] text-bronze">
+            <span aria-hidden className="h-px w-10" style={{ background: "currentColor", opacity: 0.5 }} />
+            <span>نقاش النص</span>
+          </div>
+          {GISCUS.repoId && GISCUS.categoryId ? (
+            <GiscusThread term={article.file} />
+          ) : (
+            <p className="m-0 text-sm leading-loose font-light" style={{ color: "var(--warm-gray)" }}>
+              لم يُفتح النقاش على هذا النص بعد — تجد القرّاء في{" "}
+              <Link
+                href="/salon/"
+                className="transition-colors hover:text-accent"
+                style={{ color: "var(--gold)" }}
+              >
+                المجلس
+              </Link>
+              .
+            </p>
+          )}
+        </section>
 
         <div className="mt-10 text-center">
           <Link

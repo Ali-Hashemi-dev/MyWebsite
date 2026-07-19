@@ -157,7 +157,7 @@ export function LibraryScene({ books }: { books: LoadedBook[] }) {
 
         <div ref={titleRef} className={styles.titleBlock}>
           <span className={styles.kicker}>مَكتبة</span>
-          <h1 className={`${styles.title} font-display`}>عَلي هاشمي</h1>
+          <h1 className={`${styles.title} font-display`}>عَين</h1>
           <p className={styles.subtitle}>
             خمسة كتب تسكن رفاً واحداً؛ في كل كتاب نصوص تُقرأ كما تُفتح الأبواب القديمة: على مهل،
             وبفضول.
@@ -187,7 +187,7 @@ export function LibraryScene({ books }: { books: LoadedBook[] }) {
             <AinMark variant={variant} size={160} eye />
           </span>
           <span data-intro-title className={`${styles.introTitle} font-display`}>
-            مكتبة علي هاشمي
+            مكتبة عين
           </span>
           <span className={styles.introHint}>اضغط للدخول</span>
         </div>

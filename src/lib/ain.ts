@@ -1,5 +1,5 @@
 /**
- * The ع identity mark, traced from Ali's two letterform sketches.
+ * The ع identity mark, traced from the writer's two letterform sketches.
  *
  * Variant "a" — the compact medial form: diagonal stroke + body with the
  * eye-shaped counter. Variant "b" — the final form with the descending tail.

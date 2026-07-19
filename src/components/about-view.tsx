@@ -12,7 +12,9 @@ import { Dust } from "./dust";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * The writer's room: a single portrait-lit page about Ali, told slowly.
+ * The writer's room: a single portrait-lit page about ع, told slowly.
+ * The writer publishes under the pen name عين; the real identity stays out
+ * of the site entirely.
  */
 export function AboutView() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -57,12 +59,12 @@ export function AboutView() {
       <div className="relative mx-auto max-w-2xl">
         <header data-about-head className="mb-16 text-center">
           <div className="mb-8 flex justify-center" style={{ color: "var(--bronze)" }}>
-            <AinMark variant={variant} size={130} eye title="الحرف ع — ختم علي هاشمي" />
+            <AinMark variant={variant} size={130} eye title="الحرف ع — ختم عين" />
           </div>
           <span className="text-xs tracking-[0.3em] text-bronze">صاحب المكتبة</span>
-          <h1 className="font-display mt-3 m-0 text-4xl text-parchment sm:text-5xl">علي هاشمي</h1>
+          <h1 className="font-display mt-3 m-0 text-4xl text-parchment sm:text-5xl">عين</h1>
           <p className="mt-4 mb-0 font-light" style={{ color: "var(--accent-soft)" }}>
-            كاتب لبناني — قصة، مقال، شعر حر
+            كاتبٌ يوقّع بحرفٍ واحد — قصة، مقال، شعر حر
           </p>
         </header>
 

@@ -125,7 +125,7 @@ export function HomeSections({ recent, aboutExcerpt }: { recent: Article[]; abou
           <AinMark variant={variant} size={36} />
         </div>
         <p className="m-0 font-light">
-          مكتبة علي هاشمي — نصوص عربية تُكتب على مهل. جميع الحقوق محفوظة © 2026
+          مكتبة عين — نصوص عربية تُكتب على مهل. جميع الحقوق محفوظة © 2026
         </p>
       </footer>
     </div>

@@ -8,23 +8,10 @@ const contentDir = path.join(root, "content", "articles");
 const legacyHtmlDir = path.join(root, "public", "articles");
 const generatedDataPath = path.join(root, "src", "data", "articles.generated.ts");
 
-const requiredFields = [
-  "id",
-  "file",
-  "title",
-  "subtitle",
-  "date",
-  "year",
-  "category",
-  "genre",
-  "themes",
-  "readingTime",
-  "words",
-  "mood",
-  "pdf",
-  "summary",
-  "signal"
-];
+// Only the fields the site cannot invent are required; the rest default
+// below so a minimal article published from the admin studio can never
+// break the deploy. pdf stays optional (the reader hides the PDF link).
+const requiredFields = ["id", "file", "title", "date", "genre"];
 
 function parseScalar(value) {
   const trimmed = value.trim();
@@ -71,13 +58,31 @@ function parseFrontmatter(source, filePath) {
     }
   }
 
+  const defaults = {
+    subtitle: "",
+    year: (String(data.date).match(/\d{4}/) || [""])[0],
+    category: "مزيج أدبي",
+    themes: [],
+    readingTime: "",
+    words: "",
+    mood: "",
+    pdf: "",
+    summary: "",
+    signal: ""
+  };
+  for (const [field, value] of Object.entries(defaults)) {
+    if (data[field] === undefined || data[field] === "") {
+      data[field] = value;
+    }
+  }
+
   return {
     article: {
       ...data,
       // href feeds Next <Link>, which prepends basePath itself; pdf is a plain
       // <a> to a public/ asset, so it needs the prefix baked in.
       href: `/read/${data.file}/`,
-      pdf: withBasePath(data.pdf),
+      pdf: data.pdf ? withBasePath(data.pdf) : "",
       source: path.relative(root, filePath)
     },
     markdown: match[2].trim()

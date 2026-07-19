@@ -17,7 +17,7 @@ export async function generateMetadata({
   const article = articleByFile(file);
   if (!article) return {};
   return {
-    title: `${article.title} | مكتبة علي هاشمي`,
+    title: `${article.title} | مكتبة عين`,
     description: article.summary
   };
 }

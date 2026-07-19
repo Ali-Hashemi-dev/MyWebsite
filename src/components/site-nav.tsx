@@ -8,8 +8,8 @@ import { useAinVariant } from "./identity-provider";
 const links = [
   { href: "/", label: "المكتبة" },
   { href: "/about/", label: "عن الكاتب" },
-  { href: "/lab/", label: "المِرسم" },
-  { href: "/game/", label: "صيد العين" }
+  { href: "/game/", label: "الألعاب" },
+  { href: "/salon/", label: "المجلس" }
 ];
 
 /**
@@ -31,7 +31,7 @@ export function SiteNav() {
       >
         <Link
           href="/"
-          aria-label="مكتبة علي هاشمي — الصفحة الرئيسية"
+          aria-label="مكتبة عين — الصفحة الرئيسية"
           className="text-parchment transition-colors duration-300 hover:text-accent"
         >
           <AinMark variant={variant} size={46} eye />
