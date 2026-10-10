@@ -2,7 +2,7 @@
 id: 01
 file: article1
 title: منسوجات من وجهة نظري
-subtitle: أنا منبع ما ينسج
+subtitle: 
 date: 2026/04/12
 year: 2026
 category: مزيج أدبي
