@@ -6,7 +6,7 @@ subtitle:
 date: 2025/12/10
 year: 2025
 category: مزيج أدبي
-genre: مقال
+genre: قصة
 themes: [طبيعة]
 readingTime: 3 دقائق
 words: 457 كلمة
